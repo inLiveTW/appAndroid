@@ -21,19 +21,6 @@ public class MainActivity extends FragmentActivity {
 
 		Bundle b = new Bundle();
 		b.putString("key", "Simple");
-<<<<<<< HEAD:src/com/ramesh/fragmenttabhostdemo/MainActivity.java
-		mTabHost.addTab(mTabHost.newTabSpec("simple").setIndicator("Simple"),
-				Fragment1.class, b);
-		//
-		b = new Bundle();
-		b.putString("key", "Contacts");
-		mTabHost.addTab(mTabHost.newTabSpec("contacts")
-				.setIndicator("Contacts"), Fragment2.class, b);
-		b = new Bundle();
-		b.putString("key", "Custom");
-		mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Custom"),
-				Fragment3.class, b);
-=======
 		
 		mTabHost.addTab(mTabHost.newTabSpec("simple").setIndicator("ª½¼½"),
 				Fragment1.class, null);
@@ -49,7 +36,7 @@ public class MainActivity extends FragmentActivity {
 		
 		mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("¨Æ¥ó"),
 				Fragment3.class, null);
->>>>>>> 05f992d... init:src/com/g0v/live/MainActivity.java
+		
 		// setContentView(mTabHost);
 	}
 
