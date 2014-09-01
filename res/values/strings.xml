@@ -10,4 +10,6 @@
     <string name="tab_parliament">國會</string>
     <string name="tab_event">事件</string>
 
+    <string name="title_card">Card</string>
+    
 </resources>
