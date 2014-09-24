@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <!-- Card visible layout -->
+    <LinearLayout
+        android:id="@+id/card_main_layout"
+        style="@style/card.main_layout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+        
+        <it.gmariotti.cardslib.library.view.component.CardHeaderView
+            style="@style/card.header_outer_layout"
+            android:id="@+id/card_header_layout"
+            card:card_header_layout_resourceID="@layout/card_live_header_layout"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+
+        <it.gmariotti.cardslib.library.view.component.CardThumbnailView
+            style="@style/card_thumbnail_outer_layout"
+            android:id="@+id/card_thumbnail_layout"
+            card:card_thumbnail_layout_resourceID="@layout/card_live_thumbnail_layout"
+            android:paddingTop="2dp"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+            
+        <!-- Main Content View -->
+        <RelativeLayout
+    		android:layout_height="wrap_content"
+    		android:layout_width="fill_parent">
+    		
+	        <LinearLayout
+	            android:id="@+id/card_footer_layout"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40px"
+	        	android:orientation="horizontal">
+	   
+			   <TextView
+				   android:text="&lt;地點&gt;"
+			       android:layout_marginLeft="5dp"
+				   android:textSize="14sp"
+				   android:layout_height="fill_parent"
+				   android:layout_width="wrap_content"
+				   android:gravity="center_vertical" />
+	   
+			   <TextView
+				   android:text="台北市青島東路"
+			       android:layout_marginLeft="5dp"
+				   android:textSize="14sp"
+				   android:layout_height="fill_parent"
+				   android:layout_width="wrap_content"
+				   android:gravity="center_vertical" />
+			   
+	        </LinearLayout>
+    		
+		   <ImageButton
+                android:id="@+id/card_header_button_other"
+        		android:src="@drawable/share"
+        		android:background="#00000000"
+			    android:layout_marginRight="5dp"
+			    android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true" />
+    	</RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

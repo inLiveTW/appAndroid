@@ -1,317 +1,149 @@
 package com.g0v.live;
 
+import android.support.v4.app.Fragment;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ShareActionProvider;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardGridArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.utils.BitmapUtils;
+import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 
-public class LiveFragment extends BaseFragment {
+/**
+ * Card Examples
+ *
+ * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
+ */
+public class LiveFragment extends Fragment {
 
     protected ScrollView mScrollView;
-    protected TextView mTextViewSwipe;
-
-    protected ActionMode mActionMode;
-    protected Card mCardCab;
-    protected CardView cardViewCab;
-
-    @Override
-    public int getTitleResourceId() {
-        return R.string.title_card;
-    }
+    private CardView cardView;
+    private ShareActionProvider mShareActionProvider;
+    private File photofile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.demo_fragment_card, container, false);
+        return inflater.inflate(R.layout.demo_fragment_stock_card, container, false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mScrollView = (ScrollView) getActivity().findViewById(R.id.card_scrollview);
-        mTextViewSwipe = (TextView) getActivity().findViewById(R.id.carddemo_card3_text);
+//        mScrollView = (ScrollView) getActivity().findViewById(R.id.card_scrollview);
 
+        initCard();
 
-        initCards();
+        if (photofile==null){
+            if (mShareActionProvider != null) {
+                getActivity().invalidateOptionsMenu();
+            }
+        }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mActionMode!=null)
-            mActionMode.finish();
-    }
-
-    private void initCards() {
-        init_simple_card();
-        init_card_inner_layout();
-        init_custom_card();
-        init_custom_card_swipe();
-        init_custom_card_clickable();
-        init_custom_card_partial_listener();
-        init_cab();
-    }
 
     /**
      * This method builds a simple card
      */
-    private void init_simple_card() {
+    private void initCard() {
 
         //Create a Card
-        Card card = new Card(getActivity());
+//        GoogleNowStockCard card= new GoogleNowStockCard(getActivity());
+//
+//        //Set card in the cardView
+//        cardView = (CardView) getActivity().findViewById(R.id.carddemo_GoogleNowStock);
+//        cardView.setCard(card);
 
-        //Create a CardHeader
-        CardHeader header = new CardHeader(getActivity());
+        ArrayList<Card> cards = new ArrayList<Card>();
+        for (int i=0;i<10;i++) {
 
-        //Set the header title
-        header.setTitle("HeaderTitle");
+            //Create a Card
+        	EventCard card = new EventCard(getActivity());
 
-        card.addCardHeader(header);
+            //Create a CardHeader
+//            CardHeader header = new CardHeader(getActivity());
+//            header.setTitle("´ú¸ÕCard");
+//            card.addCardHeader(header);
 
-        //Set the card inner text
-        card.setTitle("InnerText");
-
-        //Set card in the cardView
-        CardView cardView = (CardView) getActivity().findViewById(R.id.carddemo_card_id);
-        cardView.setCard(card);
-    }
-
-    /**
-     * This method builds a simple card with a custom inner layout
-     */
-    private void init_card_inner_layout() {
-
-        //Create a Card
-        Card card = new Card(getActivity(),R.layout.carddemo_example_inner_content);
-
-        //Create a CardHeader
-        CardHeader header = new CardHeader(getActivity());
-
-        //Set the header title
-        header.setTitle("TITLE");
-
-        card.addCardHeader(header);
-
-        //Set the card inner text
-        card.setTitle("BOSETITLE");
-
-        //Set card in the cardView
-        CardView cardView = (CardView) getActivity().findViewById(R.id.carddemo_card_inner);
-        cardView.setCard(card);
-    }
-
-    /**
-     * This method builds a custom card
-     */
-    private void init_custom_card() {
-
-        //Create a Card
-        Card card = new Card(getActivity());
-
-        //Set card in the cardView
-        CardView cardView = (CardView) getActivity().findViewById(R.id.carddemo_example_card3);
-        cardView.setCard(card);
-    }
-
-    /**
-     * This method builds a custom card with a swipe action
-     */
-    private void init_custom_card_swipe() {
-
-        //Create a Card
-        Card card = new Card(getActivity());
-
-        //Enable a swipe action
-        card.setSwipeable(true);
-
-        //You can set a SwipeListener.
-        card.setOnSwipeListener(new Card.OnSwipeListener() {
-            @Override
-            public void onSwipe(Card card) {
-                if (mTextViewSwipe!=null)
-                    mTextViewSwipe.setVisibility(View.GONE);
-            }
-        });
-
-        //Set card in the cardView
-        CardView cardView = (CardView) getActivity().findViewById(R.id.carddemo_example_card3_swipe);
-        cardView.setCard(card);
-    }
-
-    /**
-     * This method builds a custom card clickable
-     */
-    private void init_custom_card_clickable() {
-
-        //Create a Card
-        Card card = new Card(getActivity());
-
-        //Set onClick listener
-        card.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Toast.makeText(getActivity(),"Clickable card", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        //Set card in the cardView
-        CardView cardView = (CardView) getActivity().findViewById(R.id.carddemo_example_card3_clickable);
-        cardView.setCard(card);
-    }
-
-    /**
-     * This method builds a custom card with a swipe action
-     */
-    private void init_custom_card_partial_listener() {
-
-        //Create a Card
-        Card card1 = new Card(getActivity(),R.layout.carddemo_example_inner_content);
-
-        CardHeader header1 = new CardHeader(getActivity());
-        header1.setTitle("demo_custom_shorttitle");
-
-        card1.addCardHeader(header1);
-
-
-        //Set the card inner text
-        card1.setTitle("demo_card_shorttitle");
-
-        //Set a clickListener on ContentArea
-        card1.addPartialOnClickListener(Card.CLICK_LISTENER_CONTENT_VIEW, new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Toast.makeText(getActivity(),"Click on Content Area", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        //Set card in the cardView
-        CardView cardView1 = (CardView) getActivity().findViewById(R.id.carddemo_example_card3_listeners1);
-        cardView1.setCard(card1);
-
-        //----------------------------------------------------------------------------------
-        //Create a Card
-        Card card2 = new Card(getActivity(),R.layout.carddemo_example_inner_content);
-
-        CardHeader header2 = new CardHeader(getActivity());
-        header2.setTitle("demo_custom_shorttitle");
-
-        card2.addCardHeader(header2);
-
-
-        //Set the card inner text
-        card2.setTitle("demo_card_shorttitle");
-
-        //Set a clickListener on Header Area
-        card2.addPartialOnClickListener(Card.CLICK_LISTENER_HEADER_VIEW, new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Toast.makeText(getActivity(),"Click on Header Area", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-        //Set card in the cardView
-        CardView cardView2 = (CardView) getActivity().findViewById(R.id.carddemo_example_card3_listeners2);
-        cardView2.setCard(card2);
-
-
-    }
-
-    /**
-     * Card with a CAB
-     */
-    private void init_cab(){
-
-        //Create a Card
-        mCardCab = new Card(getActivity());
-
-        //Create a CardHeader
-        CardHeader header = new CardHeader(getActivity());
-
-        //Set the header title
-        header.setTitle("demo_title_cab1");
-
-        mCardCab.addCardHeader(header);
-
-        //Set the card inner text
-        mCardCab.setTitle("demo_card_basetitle");
-
-        //Set onClick listener
-        mCardCab.setOnLongClickListener(new Card.OnLongCardClickListener() {
-            @Override
-            public boolean onLongClick(Card card, View view) {
-                if (mActionMode != null) {
-                    view.setActivated(false);
-                    mActionMode.finish();
-                    return false;
-                }
-                // Start the CAB using the ActionMode.Callback defined above
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
-                view.setActivated(true);
-                return true;
-            }
-        });
-
-        //Set card in the cardView
-        cardViewCab = (CardView) getActivity().findViewById(R.id.carddemo_example_card_cab);
-        cardViewCab.setCard(mCardCab);
-    }
-
-
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.carddemo_cab_example, menu);
-            return true;
+//            Create thumbnail
+//            CardThumbnail thumb = new CardThumbnail(getActivity());
+//            thumb.setUrlResource("http://lh5.googleusercontent.com/-N8bz9q4Kz0I/AAAAAAAAAAI/AAAAAAAAAAs/Icl2bQMyK7c/s265-c-k-no/photo.jpg");
+//            thumb.setErrorResource(R.drawable.ic_error_loadingorangesmall);
+//            card.addCardThumbnail(thumb);
+        	
+            cards.add(card);
         }
 
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
+        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
 
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.carddemo_toast:
-                    Toast.makeText(getActivity(), "Change Text",
-                            Toast.LENGTH_LONG).show();
-                    if (mCardCab!=null && cardViewCab!=null){
-                        mCardCab.setTitle("demo_title_cab2");
-                        cardViewCab.refreshCard(mCardCab);
-                    }
-                    mode.finish(); // Action picked, so close the CAB
-                    return true;
-                default:
-                    return false;
+        CardListView listView = (CardListView) getActivity().findViewById(R.id.carddemo_list_cwl);
+        if (listView!=null){
+            listView.setAdapter(mCardArrayAdapter);
+        }
+        
+//    	Card card = new Card(getActivity());
+//    	card.setTitle("This is Title");
+//        
+//    	LinearLayout cardls;
+//    	cardls = (LinearLayout) getActivity().findViewById(R.id.carddemo_list);
+//    	
+//    	cardls.add
+//    	
+//        //Set the adapter
+//        mCardArrayAdapter = new CardGridArrayAdapter(getActivity(), cards);
+//
+//        mListView = (CardGridView) getActivity().findViewById(R.id.carddemo_extras_grid_base1);
+//        if (mListView != null) {
+//            setAlphaAdapter();
+//        }
+    }
+
+    private Intent getShareIntent(){
+        if (cardView!=null){
+            photofile = BitmapUtils.createFileFromBitmap(cardView.createBitmap());
+            if (photofile!=null){
+                return BitmapUtils.createIntentFromImage(photofile);
+            }else{
+                return getDefaultIntent();
             }
+        }else{
+            return getDefaultIntent();
         }
+    }
 
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-            if (mCardCab!=null)
-                cardViewCab.setActivated(false);
-        }
-    };
+    /** Defines a default (dummy) share intent to initialze the action provider.
+     * However, as soon as the actual content to be used in the intent
+     * is known or changes, you must update the share intent by again calling
+     * mShareActionProvider.setShareIntent()
+     */
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        return intent;
+    }
+
 
 }

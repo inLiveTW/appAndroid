@@ -32,6 +32,7 @@ public class EventFragment extends MainFragment {
 		b.putString("key", "Contacts");
 		inTab.addTab(inTab.newTabSpec("contacts")
 				.setIndicator("Contacts"), ParliamentFragment.class, b);
+		
 		return inTab;
 	}
 }
